@@ -9,6 +9,8 @@ import errorHandler from "./middlewares/errorMiddleware.js";
 import userRouter from "./routes/userRoutes.js";
 import menuRoutes from './routes/menuRoutes.js';
 
+
+
 // Load environment variables
 dotenv.config();
 
@@ -25,28 +27,24 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use(errorHandler);
 
-// Set bufferCommands to false to disable buffering
-mongoose.set('bufferCommands', false);
+// Set port
+const PORT = process.env.PORT || 8080;
 
 // API routes
 app.use('/api/users', userRouter);
 app.use('/api/menu', menuRoutes);
 
-// Error handling middleware
+
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
 });
 
-// Serve static assets
 const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, '/client/build')));
-app.get('*', (req, res) =>
-  res.sendFile(path.join(__dirname, '/client/build/index.html'))
-);
+app.use(express.static(path.join(__dirname, "public")));
+app.get('*', (req, res) => {
+res.sendFile(path.join(__dirname, './client/build/index.html'));
+});
 
-
-// Set port
-const PORT = process.env.PORT || 8080;
 
 // Start the server
 app.listen(PORT, () => {
