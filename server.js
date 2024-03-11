@@ -38,11 +38,12 @@ app.use((err, req, res, next) => {
 });
 
 // Serve static assets
-app.use(express.static(path.resolve(__dirname, 'client', 'build')));
-
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, '/client/build')));
 app.get('*', (req, res) =>
-  res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+  res.sendFile(path.join(__dirname, '/client/build/index.html'))
 );
+
 
 // Set port
 const PORT = process.env.PORT || 8080;
